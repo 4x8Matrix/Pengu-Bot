@@ -1,0 +1,1 @@
+require("DiscordBot"):_initializeAsync()
