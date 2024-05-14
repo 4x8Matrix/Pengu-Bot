@@ -51,7 +51,7 @@ function SlashCommand.onReady(self: SlashCommand)
 		self:_loadCommandModule(commandModule)
 	end
 
-	-- self:_syncCommands()
+	self:_syncCommands()
 end
 
 export type SlashCommand = typeof(SlashCommand)

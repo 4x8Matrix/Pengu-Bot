@@ -22,6 +22,8 @@ local DiscordBot = {}
 DiscordBot.Prototype = {}
 DiscordBot.Interface = {}
 
+discordClient:setVerbose(true)
+
 function DiscordBot.Prototype._invokeLifecycle(self: DiscordBot, lifecycleName: string, ...)
 	for _, system in self.systems :: { System.System } do
 		system:invokeLifecycle(lifecycleName, ...)
@@ -73,6 +75,7 @@ end
 function DiscordBot.Interface.new()
 	return setmetatable({
 		discordClient = discordClient,
+		startTime = os.time(),
 
 		systems = {}
 	}, {
