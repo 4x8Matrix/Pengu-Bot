@@ -28,7 +28,7 @@ function SlashCommand.Interface.new(applicationCommand)
 		__index = SlashCommand.Prototype
 	})
 
-	self._connection = DiscordBot.discordClient:on("Interaction", function(interaction: DiscordLuau.DiscordInteraction)
+	self._connection = DiscordBot.discordClient.eventManager.onInteraction:connect(function(interaction)
 		if interaction.data.name ~= self.command.commandName then
 			return
 		end

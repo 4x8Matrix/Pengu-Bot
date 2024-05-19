@@ -58,7 +58,7 @@ function DiscordBot.Prototype._initializeAsync(self: DiscordBot)
 
 		local readyConnection
 
-		readyConnection = discordClient:on("Ready", function()
+		discordClient.eventManager.onReady:connect(function()
 			readyConnection:disconnect()
 			readyConnection = nil
 
