@@ -4,22 +4,23 @@ local DiscordLuau = require("../../../DiscordLuau")
 
 local SlashCommand = require("../../Classes/SlashCommand")
 
-local SlashCommandPermissions = DiscordLuau.DiscordPermissions.new()
-	:addPermission(DiscordLuau.DiscordPermissions.Permissions.UseApplicationCommands)
+local SlashCommandPermissions = DiscordLuau.PermissionsBuilder.new()
+	:addPermission(DiscordLuau.PermissionsBuilder.Permissions.UseApplicationCommands)
 
 local Dog = SlashCommand.new(
-	DiscordLuau.ApplicationCommand.new()
+	DiscordLuau.CommandBuilder.new()
 		:setName("dog")
 		:setDescription("Fetch a Dog from a repository of dog photos!")
 		:setGuildPermissions(SlashCommandPermissions)
-		:addContext(DiscordLuau.ApplicationCommand.Context.Guild)
-		:setType(DiscordLuau.ApplicationCommand.Type.ChatInput)
+		:addContext(DiscordLuau.CommandBuilder.Context.Guild)
+		:setType(DiscordLuau.CommandBuilder.Type.ChatInput)
 )
 
 function Dog:onInvoked(interaction: DiscordLuau.DiscordInteraction)
-	interaction:deferAsync():await()
+	interaction:deferAsync()
 
-	local responseEmbed = DiscordLuau.DiscordEmbed.new()
+	local responseEmbed = DiscordLuau.EmbedBuilder.new()
+	local responseMessage = DiscordLuau.MessageBuilder.new()
 	local request = Net.request({
 		url = "https://dog.ceo/api/breeds/image/random",
 		method = "GET"
@@ -41,9 +42,9 @@ function Dog:onInvoked(interaction: DiscordLuau.DiscordInteraction)
 		})
 	end
 
-	interaction:sendMessageAsync({
-		embeds = { responseEmbed }
-	})
+	responseMessage:addEmbed(responseEmbed)
+
+	interaction:sendMessageAsync(responseMessage)
 end
 
 return Dog

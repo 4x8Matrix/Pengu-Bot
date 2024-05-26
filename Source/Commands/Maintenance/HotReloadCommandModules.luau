@@ -6,20 +6,21 @@ local SlashCommand = require("../../Classes/SlashCommand")
 
 local SlashCommands = require("../../Systems/SlashCommands")
 
-local SlashCommandPermissions = DiscordLuau.DiscordPermissions.new()
-	:addPermission(DiscordLuau.DiscordPermissions.Permissions.UseApplicationCommands)
+local SlashCommandPermissions = DiscordLuau.PermissionsBuilder.new()
+	:addPermission(DiscordLuau.PermissionsBuilder.Permissions.UseApplicationCommands)
 
 local HotReloadCommandModules = SlashCommand.new(
-	DiscordLuau.ApplicationCommand.new()
+	DiscordLuau.CommandBuilder.new()
 		:setName("hot-reload-command-module")
 		:setDescription("Update the code references to all commands under a command module.")
 		:setGuildPermissions(SlashCommandPermissions)
-		:addContext(DiscordLuau.ApplicationCommand.Context.Guild)
-		:setType(DiscordLuau.ApplicationCommand.Type.ChatInput)
+		:addContext(DiscordLuau.CommandBuilder.Context.Guild)
+		:setType(DiscordLuau.CommandBuilder.Type.ChatInput)
 )
 
 function HotReloadCommandModules:onInvoked(interaction: DiscordLuau.DiscordInteraction)
-	local discordEmbed = DiscordLuau.DiscordEmbed.new()
+	local discordEmbed = DiscordLuau.EmbedBuilder.new()
+	local responseMessage = DiscordLuau.MessageBuilder.new()
 		
 	discordEmbed:setTitle("Hot Reload Command Module")
 	discordEmbed:setColor(0xffffff)
@@ -34,9 +35,9 @@ function HotReloadCommandModules:onInvoked(interaction: DiscordLuau.DiscordInter
 		SlashCommands:_loadCommandModule(commandModule)
 	end
 
-	interaction:sendMessageAsync({
-		embeds = { discordEmbed }
-	})
+	responseMessage:addEmbed(discordEmbed)
+
+	interaction:sendMessageAsync(responseMessage)
 end
 
 return HotReloadCommandModules

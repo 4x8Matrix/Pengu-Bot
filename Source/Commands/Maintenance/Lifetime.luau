@@ -3,20 +3,21 @@ local DiscordBot = require("../../DiscordBot")
 
 local SlashCommand = require("../../Classes/SlashCommand")
 
-local SlashCommandPermissions = DiscordLuau.DiscordPermissions.new()
-	:addPermission(DiscordLuau.DiscordPermissions.Permissions.UseApplicationCommands)
+local SlashCommandPermissions = DiscordLuau.PermissionsBuilder.new()
+	:addPermission(DiscordLuau.PermissionsBuilder.Permissions.UseApplicationCommands)
 
 local Lifetime = SlashCommand.new(
-	DiscordLuau.ApplicationCommand.new()
+	DiscordLuau.CommandBuilder.new()
 		:setName("lifetime")
 		:setDescription("Fetch the uptime/lifetime of this Discord Bot!")
 		:setGuildPermissions(SlashCommandPermissions)
-		:addContext(DiscordLuau.ApplicationCommand.Context.Guild)
-		:setType(DiscordLuau.ApplicationCommand.Type.ChatInput)
+		:addContext(DiscordLuau.CommandBuilder.Context.Guild)
+		:setType(DiscordLuau.CommandBuilder.Type.ChatInput)
 )
 
 function Lifetime:onInvoked(interaction: DiscordLuau.DiscordInteraction)
-	local discordEmbed = DiscordLuau.DiscordEmbed.new()
+	local discordEmbed = DiscordLuau.EmbedBuilder.new()
+	local responseMessage = DiscordLuau.MessageBuilder.new()
 
 	local deltaTime = os.time() - DiscordBot.startTime
 
@@ -28,9 +29,9 @@ function Lifetime:onInvoked(interaction: DiscordLuau.DiscordInteraction)
 	discordEmbed:setColor(0xffffff)
 	discordEmbed:setDescription(`Alive for; {string.format("%02i:%02i:%02i", hours, minutes - hours * 60, _seconds - minutes * 60)}!`)
 
-	interaction:sendMessageAsync({
-		embeds = { discordEmbed }
-	})
+	responseMessage:addEmbed(discordEmbed)
+
+	interaction:sendMessageAsync(responseMessage)
 end
 
 return Lifetime

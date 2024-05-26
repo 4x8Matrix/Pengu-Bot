@@ -10,8 +10,8 @@ local System = require("Classes/System")
 
 local Env = require("../.env")
 
-local discordIntents = DiscordLuau.DiscordIntents.fromAll()
-local discordSettings = DiscordLuau.DiscordSettings.new(Env.DISCORD_BOT_AUTHENTICATION_TOKEN, discordIntents)
+local discordIntents = DiscordLuau.IntentsBuilder.fromAll()
+local discordSettings = DiscordLuau.SettingsBuilder.new(Env.DISCORD_BOT_AUTHENTICATION_TOKEN, discordIntents)
 
 local discordClient = DiscordLuau.DiscordClient.new(discordSettings)
 
@@ -58,7 +58,7 @@ function DiscordBot.Prototype._initializeAsync(self: DiscordBot)
 
 		local readyConnection
 
-		discordClient.eventManager.onReady:connect(function()
+		readyConnection = discordClient.eventManager.onReady:connect(function()
 			readyConnection:disconnect()
 			readyConnection = nil
 

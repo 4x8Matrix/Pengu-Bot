@@ -7,20 +7,21 @@ local SlashCommand = require("../../Classes/SlashCommand")
 
 local SlashCommands = require("../../Systems/SlashCommands")
 
-local SlashCommandPermissions = DiscordLuau.DiscordPermissions.new()
-	:addPermission(DiscordLuau.DiscordPermissions.Permissions.UseApplicationCommands)
+local SlashCommandPermissions = DiscordLuau.PermissionsBuilder.new()
+	:addPermission(DiscordLuau.PermissionsBuilder.Permissions.UseApplicationCommands)
 
 local ReloadCommandModule = SlashCommand.new(
-	DiscordLuau.ApplicationCommand.new()
+	DiscordLuau.CommandBuilder.new()
 		:setName("reload-command-module")
 		:setDescription("Update all commands under a command module.")
 		:setGuildPermissions(SlashCommandPermissions)
-		:addContext(DiscordLuau.ApplicationCommand.Context.Guild)
-		:setType(DiscordLuau.ApplicationCommand.Type.ChatInput)
+		:addContext(DiscordLuau.CommandBuilder.Context.Guild)
+		:setType(DiscordLuau.CommandBuilder.Type.ChatInput)
 )
 
 function ReloadCommandModule:onInvoked(interaction: DiscordLuau.DiscordInteraction)
-	local discordEmbed = DiscordLuau.DiscordEmbed.new()
+	local discordEmbed = DiscordLuau.EmbedBuilder.new()
+	local responseMessage = DiscordLuau.MessageBuilder.new()
 		
 	discordEmbed:setTitle("Reload Command Module")
 	discordEmbed:setColor(0xffffff)
@@ -39,15 +40,15 @@ function ReloadCommandModule:onInvoked(interaction: DiscordLuau.DiscordInteracti
 		text = "You may need to reload your Discord client to see the updated commands! (ctrl + r)"
 	})
 
+	responseMessage:addEmbed(discordEmbed)
+
 	SlashCommands:_syncCommands()
 
 	interaction:deferAsync()
 
 	Task.wait(15)
 
-	interaction:editMessageAsync({
-		embeds = { discordEmbed }
-	})
+	interaction:editMessageAsync(responseMessage)
 end
 
 return ReloadCommandModule

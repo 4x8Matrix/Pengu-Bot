@@ -3,20 +3,21 @@ local DiscordBot = require("../../DiscordBot")
 
 local SlashCommand = require("../../Classes/SlashCommand")
 
-local SlashCommandPermissions = DiscordLuau.DiscordPermissions.new()
-	:addPermission(DiscordLuau.DiscordPermissions.Permissions.UseApplicationCommands)
+local SlashCommandPermissions = DiscordLuau.PermissionsBuilder.new()
+	:addPermission(DiscordLuau.PermissionsBuilder.Permissions.UseApplicationCommands)
 
 local Leave = SlashCommand.new(
-	DiscordLuau.ApplicationCommand.new()
+	DiscordLuau.CommandBuilder.new()
 		:setName("leave-voice-channel")
 		:setDescription("Join your user Voice channel")
 		:setGuildPermissions(SlashCommandPermissions)
-		:addContext(DiscordLuau.ApplicationCommand.Context.Guild)
-		:setType(DiscordLuau.ApplicationCommand.Type.ChatInput)
+		:addContext(DiscordLuau.CommandBuilder.Context.Guild)
+		:setType(DiscordLuau.CommandBuilder.Type.ChatInput)
 )
 
 function Leave:onInvoked(interaction: DiscordLuau.DiscordInteraction)
-	local responseEmbed = DiscordLuau.DiscordEmbed.new()
+	local responseEmbed = DiscordLuau.EmbedBuilder.new()
+	local responseMessage = DiscordLuau.MessageBuilder.new()
 	
 	if DiscordBot.connectedVoiceChannel then
 		responseEmbed:setTitle(`Left the '<#{DiscordBot.connectedVoiceChannel.id}>' Voice Channel!`)
@@ -30,9 +31,9 @@ function Leave:onInvoked(interaction: DiscordLuau.DiscordInteraction)
 		responseEmbed:setColor(0xff0000)
 	end
 
-	interaction:sendMessageAsync({
-		embeds = { responseEmbed }
-	})
+	responseMessage:addEmbed(responseEmbed)
+
+	interaction:sendMessageAsync(responseMessage)
 end
 
 return Leave

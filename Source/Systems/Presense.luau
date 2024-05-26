@@ -21,14 +21,14 @@ local Presense = System.new("Presense")
 local reporter = Console.new("🎯 Presense")
 
 function Presense:onReady()
-	local discordPresence = DiscordLuau.DiscordPresence.new()
-	local discordActivity = DiscordLuau.DiscordActivity.new()
+	local discordPresence = DiscordLuau.PresenceBuilder.new()
+	local discordActivity = DiscordLuau.ActivityBuilder.new()
 
 	while true do
 		discordActivity:setActivityName(RANDOM_ACTIVITY_NAME_LIST[math.random(#RANDOM_ACTIVITY_NAME_LIST)])
-		discordActivity:setActivityType(DiscordLuau.DiscordActivity.Type.Watching)
+		discordActivity:setActivityType(DiscordLuau.ActivityBuilder.Type.Watching)
 
-		discordPresence:setStatus(DiscordLuau.DiscordPresence.Status.Idle)
+		discordPresence:setStatus(DiscordLuau.PresenceBuilder.Status.Idle)
 		discordPresence:addActivity(discordActivity)
 		discordPresence:setSince(0)
 

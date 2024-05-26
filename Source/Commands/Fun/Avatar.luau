@@ -2,20 +2,20 @@ local DiscordLuau = require("../../../DiscordLuau")
 
 local SlashCommand = require("../../Classes/SlashCommand")
 
-local SlashCommandPermissions = DiscordLuau.DiscordPermissions.new()
-	:addPermission(DiscordLuau.DiscordPermissions.Permissions.UseApplicationCommands)
+local SlashCommandPermissions = DiscordLuau.PermissionsBuilder.new()
+	:addPermission(DiscordLuau.PermissionsBuilder.Permissions.UseApplicationCommands)
 
 local Avatar = SlashCommand.new(
-	DiscordLuau.ApplicationCommand.new()
+	DiscordLuau.CommandBuilder.new()
 		:setName("get-avatar")
 		:setDescription("Fetch the avatar of a user")
 		:setGuildPermissions(SlashCommandPermissions)
-		:addContext(DiscordLuau.ApplicationCommand.Context.Guild)
-		:setType(DiscordLuau.ApplicationCommand.Type.ChatInput)
+		:addContext(DiscordLuau.CommandBuilder.Context.Guild)
+		:setType(DiscordLuau.CommandBuilder.Type.ChatInput)
 		:addOption(
-			(DiscordLuau.ApplicationCommandOption.new() :: any)
-				:setType(DiscordLuau.ApplicationCommandOption.Type.User)
-				:setChannelTypes(DiscordLuau.ApplicationCommandOption.ChannelType.GuildVoice)
+			(DiscordLuau.CommandOptionBuilder.new() :: any)
+				:setType(DiscordLuau.CommandOptionBuilder.Type.User)
+				:setChannelTypes(DiscordLuau.CommandOptionBuilder.ChannelType.GuildVoice)
 				:setDescription("The user you'd like the image of")
 				:setName("target-user")
 				:setRequired(true)
@@ -27,7 +27,8 @@ function Avatar:onInvoked(interaction: DiscordLuau.DiscordInteraction)
 	local member = interaction.guild:getMemberAsync(userId):await()
 	local avatarHash = member.user.avatar
 
-	local responseEmbed = DiscordLuau.DiscordEmbed.new()
+	local responseEmbed = DiscordLuau.EmbedBuilder.new()
+	local responseMessage = DiscordLuau.MessageBuilder.new()
 
 	responseEmbed:setTitle(`{member.user.username}'s Avatar`)
 	responseEmbed:setColor(0xffffff)
@@ -35,9 +36,9 @@ function Avatar:onInvoked(interaction: DiscordLuau.DiscordInteraction)
 		imageUrl = `https://cdn.discordapp.com/avatars/{userId}/{avatarHash}.webp?size=240`,
 	})
 
-	interaction:sendMessageAsync({
-		embeds = { responseEmbed }
-	})
+	responseMessage:addEmbed(responseEmbed)
+
+	interaction:sendMessageAsync(responseMessage)
 end
 
 return Avatar

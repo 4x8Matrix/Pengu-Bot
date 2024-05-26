@@ -1,6 +1,5 @@
 local Task = require("@lune/task")
 
-local DiscordLuau = require("../../DiscordLuau")
 local DiscordBot = require("../DiscordBot")
 
 local SlashCommand = {}
