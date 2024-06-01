@@ -11,8 +11,12 @@ local Join = SlashCommand.new(
 		:setName("join-voice-channel")
 		:setDescription("Join your user Voice channel")
 		:setGuildPermissions(SlashCommandPermissions)
-		:addContext(DiscordLuau.CommandBuilder.Context.Guild)
 		:setType(DiscordLuau.CommandBuilder.Type.ChatInput)
+		:addContext(DiscordLuau.CommandBuilder.Context.Guild)
+		:addContext(DiscordLuau.CommandBuilder.Context.PrivateChannel)
+		:addContext(DiscordLuau.CommandBuilder.Context.BotDM)
+		:addIntegration(DiscordLuau.CommandBuilder.IntegrationType.GuildCommand)
+		:addIntegration(DiscordLuau.CommandBuilder.IntegrationType.UserCommand)
 		:addOption(
 			(DiscordLuau.CommandOptionBuilder.new() :: any)
 				:setType(DiscordLuau.CommandOptionBuilder.Type.Channel)

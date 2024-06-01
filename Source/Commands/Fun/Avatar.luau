@@ -10,8 +10,12 @@ local Avatar = SlashCommand.new(
 		:setName("get-avatar")
 		:setDescription("Fetch the avatar of a user")
 		:setGuildPermissions(SlashCommandPermissions)
-		:addContext(DiscordLuau.CommandBuilder.Context.Guild)
 		:setType(DiscordLuau.CommandBuilder.Type.ChatInput)
+		:addContext(DiscordLuau.CommandBuilder.Context.Guild)
+		:addContext(DiscordLuau.CommandBuilder.Context.PrivateChannel)
+		:addContext(DiscordLuau.CommandBuilder.Context.BotDM)
+		:addIntegration(DiscordLuau.CommandBuilder.IntegrationType.GuildCommand)
+		:addIntegration(DiscordLuau.CommandBuilder.IntegrationType.UserCommand)
 		:addOption(
 			(DiscordLuau.CommandOptionBuilder.new() :: any)
 				:setType(DiscordLuau.CommandOptionBuilder.Type.User)

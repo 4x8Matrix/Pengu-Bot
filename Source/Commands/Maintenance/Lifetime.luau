@@ -11,8 +11,12 @@ local Lifetime = SlashCommand.new(
 		:setName("lifetime")
 		:setDescription("Fetch the uptime/lifetime of this Discord Bot!")
 		:setGuildPermissions(SlashCommandPermissions)
-		:addContext(DiscordLuau.CommandBuilder.Context.Guild)
 		:setType(DiscordLuau.CommandBuilder.Type.ChatInput)
+		:addContext(DiscordLuau.CommandBuilder.Context.Guild)
+		:addContext(DiscordLuau.CommandBuilder.Context.PrivateChannel)
+		:addContext(DiscordLuau.CommandBuilder.Context.BotDM)
+		:addIntegration(DiscordLuau.CommandBuilder.IntegrationType.GuildCommand)
+		:addIntegration(DiscordLuau.CommandBuilder.IntegrationType.UserCommand)
 )
 
 function Lifetime:onInvoked(interaction: DiscordLuau.DiscordInteraction)

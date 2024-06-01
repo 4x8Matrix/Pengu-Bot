@@ -12,8 +12,12 @@ local Dog = SlashCommand.new(
 		:setName("dog")
 		:setDescription("Fetch a Dog from a repository of dog photos!")
 		:setGuildPermissions(SlashCommandPermissions)
-		:addContext(DiscordLuau.CommandBuilder.Context.Guild)
 		:setType(DiscordLuau.CommandBuilder.Type.ChatInput)
+		:addContext(DiscordLuau.CommandBuilder.Context.Guild)
+		:addContext(DiscordLuau.CommandBuilder.Context.PrivateChannel)
+		:addContext(DiscordLuau.CommandBuilder.Context.BotDM)
+		:addIntegration(DiscordLuau.CommandBuilder.IntegrationType.GuildCommand)
+		:addIntegration(DiscordLuau.CommandBuilder.IntegrationType.UserCommand)
 )
 
 function Dog:onInvoked(interaction: DiscordLuau.DiscordInteraction)
